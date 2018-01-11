@@ -1,0 +1,60 @@
+#######################################################################################
+#                                                                                     #
+#        Long.Mult                                                                    #
+#                                                                                     #
+#######################################################################################
+#                                                                                     #
+#       Multiply 2 large positive integer                                             #
+#                                                                                     #
+#      input:     numeric vector x, y                                                 #
+#      output:    numeric vector z, which contains multiplication of x an y           #
+#      Note: elements in x and y must be between 0 and 999                            #
+#            result will be shown in the same format of x and y                       #
+#######################################################################################
+
+long.mult <- function(x,y)
+{ #start function for long.mult
+
+  a = length(x)       #create variable for length of x
+  b = length(y)       #create variable for length of y
+  z= c()              #create empty numeric vector z
+  for (k in 1:(a+b))  #set all elements in z to be 0 to avoid N/A durng calculation
+  {
+    z[k] = 0
+  }
+  x = rev(x)          #reverse the order of x
+  y = rev(y)          #reverse the order of x
+  carryover = 0       #set variable carryover to be 0 for calculation later
+
+  for (i in 1:b)      #start loop to go through elements in y
+  {
+    for (j in 1:a)    #start loop to go through elements in y
+    {
+      if (i == 1)                                 #scenerio for base case
+      {
+      tempmult = x[j]*y[i]                        #multiply first element of x and y
+      z[j] = tempmult%%1000 + z[j]                #assign first element in z to be the last 3 digits of the multiplication
+      z[j+i] = tempmult%/%1000                    #assign the second element in z to be the rest of the multiplication
+      }
+      else if (i > 1)                             #scenerio for all other cases
+      {
+        tempmult = x[j]*y[i]                      #multiple the element of x and y individually
+        z[j+i-1] = tempmult%%1000 + z[j+i-1]      #add the last 3 digits of the mulitplication to previous stored value
+        z[j+i] = tempmult%/%1000 +z[j+i]          #add the remaining digits of the mulitplication to previous stored value
+      }
+    }
+  }
+  for (l in 1:length(z))                          #start loop to go through elements in z
+  {
+    if (z[l]>=1000)                               #condition if element in z is greater than 1000 we need to carryover excess to next element
+    {
+      carryover = z[l]%/%1000                     #temporary set carryover amount
+      z[l] = z[l]%%1000                           #update element after removing excess
+      z[l+1] = z[l+1] + carryover                 #update element after adding carryover
+    }
+  }
+z = rev(z)                                        #reverse vector z to show correct order of answer
+z <- z[z != 0]                                    #remove element that has a 0
+return(z)                                         #return result
+  
+}
