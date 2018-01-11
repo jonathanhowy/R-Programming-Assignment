@@ -6,15 +6,34 @@
 #                                                                                     #
 #       Multiply 2 large positive integer                                             #
 #                                                                                     #
-#      input:     numeric vector x, y                                                 #
+#      input:     numeric vector x, y where each element is a numeric value           #
+#                 range from 0 to 999, breaking down the large number into            #
+#                 sections of 3s                                                      #
 #      output:    numeric vector z, which contains multiplication of x an y           #
-#      Note: elements in x and y must be between 0 and 999                            #
+#                 where each element is a numeric value range from 0 to 999           #
+#      Note: This function multiple 2 very large positive number.                     #
+#            Each number is input as units of 3s.  This allows us to multiply the     #
+#            numbers in section.  We will perform the multiplication just like        #
+#            we would normally but each digits will be in units of 3s.                #
+#            I first created an empty vector z which will contains the final answer   #
+#            I first revers the order of vector x and y so the direction of the       #
+#            multiplication is correct.  Then i would multiply the numbers by         #
+#            using 2 for loops.  I will multiply each elements of the 2 numbers       #
+#            and assign the last 3 digits to the respective elements in vector z      #
+#            As the loop contines, each elements in vector z will continue to add on  #
+#            as we multiply the elements in x and y.  After we completed multiplying  #
+#            all elements in x and y, some elements in z will be larger than 999      #
+#            As a result, we would use another for loop to find those elements and    #
+#            minus the 1000s until it is under 1000 and add the carryover to the next #
+#            elements.  Then i will revers the vector z to show the correct order     #
+#            of the answer.  I then use another for loop to remove any 0 element in   #
+#            beginning of the vector so the answer will not begin in 0.
 #            result will be shown in the same format of x and y                       #
 #######################################################################################
 
 long.mult <- function(x,y)
 { #start function for long.mult
-
+  
   a = length(x)       #create variable for length of x
   b = length(y)       #create variable for length of y
   z= c()              #create empty numeric vector z
@@ -26,6 +45,14 @@ long.mult <- function(x,y)
   y = rev(y)          #reverse the order of x
   carryover = 0       #set variable carryover to be 0 for calculation later
 
+  for (h in 1:a)      #error checking for invalid values in x
+  {
+    if (x[h] < 0 || x[h] > 999 || is.numeric(x) == FALSE) stop("there are values outside the range of 0 and 999 or there are non numeric values in x")
+  }
+  for (p in 1:b)      #error checking for invalid values in y
+  {
+    if (y[p] < 0 || y[p] > 999 || is.numeric(y) == FALSE) stop("there are values outside the range of 0 and 999 or there are non numeric values in y")
+  }
   for (i in 1:b)      #start loop to go through elements in y
   {
     for (j in 1:a)    #start loop to go through elements in y
@@ -54,7 +81,13 @@ long.mult <- function(x,y)
     }
   }
 z = rev(z)                                        #reverse vector z to show correct order of answer
-z <- z[z != 0]                                    #remove element that has a 0
+
+if (z[1] == 0)                                    #delete zero element in the begining
+{
+  z <- z[-1]
+}
+                                   
 return(z)                                         #return result
   
 }
+
