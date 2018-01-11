@@ -1,0 +1,34 @@
+###################################################################################################
+#                                                                                                 #
+#        Bin.data                                                                                 #
+#                                                                                                 #
+###################################################################################################
+#                                                                                                 #
+#       Bin data into appropriate bins                                                            #
+#                                                                                                 #
+#      input:     numeric vector x and bins where elements in x are the numbers being binned and  #
+#                 elements in bins are the cutoff points for each bin                             #
+#      output:    numeric vector z, which contains the count of each bins                         #
+#      Note:                                                                                      #
+###################################################################################################
+
+bin.data <- function(x,bins)
+{ # syntax
+  n = length(x)                 ## create variable n to label length of vector x
+  m = length(bins)              ## create variable n to label length of vector bins
+  z <- vector(length = m+1)     ## create a new vector z that will output the count of each bin
+                                ## length of z() needs to be m+1 as last bin are anything bigger than last elements in bins
+  bins = c(bins, Inf)           ## set bins to have upper bound as infinity
+  
+  for ( i in 1:n)               ## for loop to go through each element in vector x
+  {
+    j = 1
+    while (x[i] > bins[j])      ## test each elements against each bins
+    {
+      j = j + 1
+    }
+    z[j] = z[j] + 1             ## when x[i] is bigger than bins[j] then we add one count to respective bin
+  }
+  return(z)
+}
+
