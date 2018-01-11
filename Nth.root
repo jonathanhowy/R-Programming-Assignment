@@ -1,0 +1,33 @@
+#######################################################################################
+#                                                                                     #
+#        Nth.root                                                                     #
+#                                                                                     #
+#######################################################################################
+#                                                                                     #
+#       Calculate the nth root of a                                                   #
+#                                                                                     #
+#      input:     numeric vector a, n and tol                                         #
+#      output:    numeric vector z, which contains a the nth root of a                #
+#      Note: a and n must be positive number.  If not, output will be an error.       #
+#             tol must also be greater than or equal to 1e-15                         #
+#######################################################################################
+
+nth.root <- function(a,n,tol)
+{ #start function for nth.root
+  if (tol < 1E-15) stop("tol cannot be less than 1e-15") #test for tol level lower than 1e-15
+  if (a < 0 || n <= 0) stop("a or n must be greater than zero") #test to makesure a and n are postive
+  i = 1 #set i for while loop
+  x0 = 1 #set initial x0 for Newton's method to find nth root
+  root = c() #create empty vector to store all test root
+  
+  while ( i > 0 ) #start while loop
+  {
+    x1 = (1/n)*((n-1)*x0+(a/(x0^(n-1)))) #set x(k+1) to compare x
+    root[i] = x1 #store possible root value
+    i = i + 1 #increment for i
+    if (abs(x1 - x0) < tol) break #once difference between x(k+1) x(k) is close to zero, break loop
+    x0 = x1 #set x0 to become new x1 to repeat the process
+    
+  }
+  return(root[length(root)]) #return the final root
+}
