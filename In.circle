@@ -1,3 +1,16 @@
+#######################################################################################
+#                                                                                     #
+#        In.circle                                                                    #
+#                                                                                     #
+#######################################################################################
+#                                                                                     #
+#       Determine if data points are within circle                                    #
+#                                                                                     #
+#      input:     numeric matrix pts, numeric vector cntr, numeric variable r         #
+#      output:    numeric matrix incircle, which contains a matric of all points      #
+#                 within the circle. A graph showing all points in and out of circle  #
+#      Note:                                                                          #
+#######################################################################################
 in.circle <- function(pts, cntr, r)
 {
   
