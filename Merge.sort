@@ -1,0 +1,56 @@
+#######################################################################################
+#                                                                                     #
+#        Merge.sort                                                                   #
+#                                                                                     #
+#######################################################################################
+#                                                                                     #
+#       Merge two sorted vector into one sorted vector                                #
+#                                                                                     #
+#      input:     numeric vector x and y                                              #
+#      output:    numeric vector z, which contains a sorted combination of x and y    #
+#      Note: vector x and y must be sorted.  If not, output z will be incorrect       #
+#######################################################################################
+
+merge.sort <- function(x,y)
+{# syntax
+  
+  k = 1   ##new constant to move through new vector
+  i = 1   ##set start for while loop for vector x
+  j = 1   ##set start for while loop for vector y
+  
+  xn = length(x) ##create variable for the length of vector x
+  yn = length(y) ##create variable for the length of vector y
+  kn = xn + yn   ##kn equals to the length of merged vector
+  
+  z <- vector(mode= "numeric", length = kn)
+  
+
+  while ( i <= xn && j <=yn) ##start while loop to compare the value of each 
+                             ##index for both vector x and y up tp length of vector x or y
+  {
+    if ( x[i] < y[j])
+    {
+      z[k] = x[i]            ## assign x[i] into first element in vector z
+      i = i + 1              ## increment of i and k
+      k = k + 1
+    }
+    else
+    {
+      z[k] = y[j]            ## assign y[i] into first element in vector z
+      j = j + 1              ## increment of j nad k
+      k = k + 1
+    }
+  }
+  if ( i > xn)               ## test to see which vector is shorter
+  {
+    z = c(z[1:(k-1)], y[j:yn]) ## add remaining vecotr from vector y as 
+                               ## vector x reached its end first in the while loop
+  }
+  else
+  {
+    z = c(z[1:(k-1)], x[i:xn]) ## add remaining vecotr from vector x as 
+                               ## vector y reached its end first in the while loop
+  }
+  return(z)
+}
+

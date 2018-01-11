@@ -1,0 +1,122 @@
+####################################################################
+#                                                                  #
+#   function name: detect.misclass                                 #
+#        input arguments are class.v and p                         #
+#                                                                  #
+#   A function that detects misclassified observations between     #
+#   a data set with two classification groups.                     #
+#                                                                  #
+#   The function takes two arguments, class.v is a vector which    #
+#   holds values of 1 and 2 to identify the classification that    #
+#   a data point belongs to. Argument p is a matrix holding the    #
+#   data point that correspond to the classifications.             #
+#                                                                  #
+#   Each of the data points are compared to the others.            #
+#   The seven closest data points are selected and the             #
+#   classifications are observed to find the one that is most      #
+#   occurring. If the data point's classification matches the      #
+#   majority of the seven closest classifications, then it is      #
+#   determined to be correctly classified. If it does not match,   #
+#   it is misclassified and the information is stored.             #
+#                                                                  #
+#   The output is either FALSE, if there are no misclassifications.#
+#   The output is TRUE, if there are misclassifications, followed  #
+#   by a list of locations that are misclassified, and their       #
+#   correct classifications.                                       #
+#                                                                  #
+####################################################################
+
+detect.misclass <- function(class.v, p)
+{ # begin function for detect.misclass
+  n = dim(p)[1]
+    # n is equal to the dimensions in p
+  err.found = c(TRUE,FALSE)
+    # statements declaring if misclassifications were identified
+  err.location = c()
+    # empty vector to hold locations of misclassifications
+  new.class = c()
+    # empty vector to hold correct classifications
+  tot.dist=c()
+    # empty vector to hold the total distance between data points
+  min7 = c()
+    # empty vector to hold the smallest 7 distances from the data
+    # point, and the distance from itself
+  for (i in 1:n){
+    # begin for loop through data points
+      dist=matrix(rep(p[i,],n), nrow=n, byrow=TRUE)
+        # replicated matrix of each data point repeated
+      tot.dist = rowSums((p-dist)^2)
+        # the points are subtracted from each other and 
+        # squared to find the distance
+      min7 = tot.dist[1:8]
+        # the first seven distances from the data point are stored
+        # along with the distance from the data point itself
+      minindex = c(1:8)
+        # the indicies of the eight distances are stored
+      mx = max(min7)
+        # the max of the eight data points is established
+    for (j in 9:n)
+    { # begin for loop to go through the remaining distances
+      if (mx > tot.dist[j])
+      { # determine if the next value is less than the max value
+        minindex[which.max(min7)] = j
+          # update the min index if the distance is smaller 
+        min7[which.max(min7)]=tot.dist[j]
+          # update the min values if the distance is smaller
+      }
+    }
+    one = 0
+      # create counter for number of points in class 1
+    two = 0
+      # create counter for number of points in class 2
+    k = 1
+      # set counter to loop through shortest distances
+    while ( k <= 8)
+    { # loop through shortest distances
+      if (class.v[minindex[k]] == 1)
+      { # determine if classification equals 1
+        one = one + 1
+          # add number of classifications in group 1
+      }
+      else
+      { # used for classifications equal to 2
+        two = two + 1
+          # add number of classifications in group 2
+      }
+      k = k + 1
+        # increment k to continue the loop
+    }
+    if ( one > two)
+    { # determine which classification makes up the majority 
+      verify = 1
+        # set verify to 1 if it is the majority
+    }
+    else
+    {
+      verify = 2
+        # set verify to 2 if it is the majority
+    }
+    
+    if ( class.v[i] != verify)
+    { # check if the data point is different than the majority
+      err.location = append(err.location, i)
+        # add misclassification location to err.location
+      new.class = append(new.class, verify)
+        # add new classification to new.class
+    }
+    if(is.null(err.location) == FALSE)
+    { # check if there are misclassifications
+      err.found = TRUE
+        # if there are errors set to TRUE
+    }
+    else{
+      err.found = FALSE
+        # if there are not errors set to FALSE
+    }
+  }
+  z = list(err.found = err.found, err.location = err.location, new.class = new.class)
+    # create list of the necessary output
+  return(z)
+    # return the output
+}
+  

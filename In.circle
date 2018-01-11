@@ -1,0 +1,67 @@
+#######################################################################################
+#                                                                                     #
+#        In.circle                                                                    #
+#                                                                                     #
+#######################################################################################
+#                                                                                     #
+#       Determine if data points are within circle                                    #
+#                                                                                     #
+#      input:     numeric matrix pts, numeric vector cntr, numeric variable r         #
+#      output:    numeric matrix incircle, which contains a matric of all points      #
+#                 within the circle. A graph showing all points in and out of circle  #
+#      Note:                                                                          #
+#######################################################################################
+in.circle <- function(pts, cntr, r)
+{
+  
+  incircle <- matrix(, nrow=dim(pts)[1], ncol=2)
+  outcircle <- matrix(, nrow=dim(pts)[1], ncol=2)
+  
+  
+  for (i in 1:dim(pts)[1])
+  {
+    if (sqrt((pts[i,1]-cntr[1])^2+(pts[i,2]-cntr[2])^2)<=r)
+    {
+      incircle[i,1] = pts[i,1]
+      incircle[i,2] = pts[i,2]
+    }
+    else
+    {
+      outcircle[i,1] = pts[i,1]
+      outcircle[i,2] = pts[i,2]
+    }
+   }
+  incircle <- incircle[!apply(is.na(incircle) | incircle == "", 1, all),]
+  outcircle <- outcircle[!apply(is.na(outcircle) | outcircle == "", 1, all),]
+  
+  theta = seq(0,2*pi,length = 2000)
+  x     = r*cos(theta)
+  y     = r*sin(theta)
+  maxptx = max(pts[,1], (cntr[1]+r))
+  maxpty = max(pts[,1], (cntr[2]+r))
+  minptx = min(pts[1,], (cntr[1]-r))
+  minpty = min(pts[1,], (cntr[2]-r))
+  
+  incirptsx = incircle[,1]
+  incirptsy = incircle[,2]
+  outcirptsx = outcircle[,1]
+  outcirptsy = outcircle[,2]
+
+
+  dev.new();plot(x+cntr[1],y+cntr[2], type = "l", 
+                 main = "Divide points using circle", sub ="WeiYin Ho",
+                 xlab = "x-axis",
+                 ylab = "y-axis", 
+                 xlim = c(minptx-1, maxptx+1),
+                 ylim = c(minpty-1, maxpty+1))
+  
+  points(incirptsx, incirptsy, col = "red")
+  points(outcirptsx, outcirptsy, col = "blue")
+
+                 
+  
+  return(incircle)
+  
+
+  
+}
